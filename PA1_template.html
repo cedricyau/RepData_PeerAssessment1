@@ -293,6 +293,10 @@ for (i in 1:nrow(dataFilledIn)) {
         dataFilledIn[i, 5] &lt;- &quot;weekend&quot;
     }
 }
+
+weekends &lt;- dataFilledIn[dataFilledIn$IsWeekend == &quot;weekend&quot;, ]
+weekdays &lt;- dataFilledIn[dataFilledIn$IsWeekend == &quot;weekday&quot;, ]
+
 </code></pre>
 
 </body>

@@ -68,4 +68,8 @@ for (i in 1:nrow(dataFilledIn)) {
   }
 }
 
+weekends <- dataFilledIn[dataFilledIn$IsWeekend == 'weekend',]
+weekdays <- dataFilledIn[dataFilledIn$IsWeekend == 'weekday',]
+
+
 ```

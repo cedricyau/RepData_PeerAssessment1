@@ -132,5 +132,9 @@ for (i in 1:nrow(dataFilledIn)) {
         dataFilledIn[i, 5] <- "weekend"
     }
 }
+
+weekends <- dataFilledIn[dataFilledIn$IsWeekend == "weekend", ]
+weekdays <- dataFilledIn[dataFilledIn$IsWeekend == "weekday", ]
+
 ```
 
