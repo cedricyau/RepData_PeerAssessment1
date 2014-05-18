@@ -136,5 +136,24 @@ for (i in 1:nrow(dataFilledIn)) {
 weekends <- dataFilledIn[dataFilledIn$IsWeekend == "weekend", ]
 weekdays <- dataFilledIn[dataFilledIn$IsWeekend == "weekday", ]
 
+
+dataAvgByInterval <- aggregate(x = weekends$steps, by = list(Interval = weekends$interval), 
+    FUN = sum)
+colnames(dataAvgByInterval) <- c("interval", "steps")
+plot(dataAvgByInterval$interval, dataAvgByInterval$steps, type = "l", main = "Average Daily Pattern (Weekends)", 
+    xlab = "Time", ylab = "# of Steps")
 ```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+
+
+```r
+dataAvgByInterval <- aggregate(x = weekdays$steps, by = list(Interval = weekdays$interval), 
+    FUN = sum)
+colnames(dataAvgByInterval) <- c("interval", "steps")
+plot(dataAvgByInterval$interval, dataAvgByInterval$steps, type = "l", main = "Average Daily Pattern (Weekdays)", 
+    xlab = "Time", ylab = "# of Steps")
+```
+
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
 
