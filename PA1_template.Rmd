@@ -2,19 +2,61 @@
 
 
 ## Loading and preprocessing the data
-
+data <- read.csv('activity.csv',header=TRUE)
+dataNotNA <- data[!is.na(data$steps),]
+dataNA <- data[is.na(data$steps),]
 
 
 ## What is mean total number of steps taken per day?
 
+hist(dataSumByDate$steps)
+mean(dataSumByDate$steps)
+median(dataSumByDate$steps)
 
 
 ## What is the average daily activity pattern?
 
+dataAvgByInterval <- aggregate(x=dataNotNA$steps, by=list(Interval=dataNotNA$interval),FUN=mean)
+names(dataAvgByInterval) <- c('interval','steps')
+
+plot(dataAvgByInterval$interval, dataAvgByInterval$steps, type='l', main='Average Daily Pattern',
+     xlab ='Time', ylab='# of Steps')
+
+dataAvgByIntervalSorted <- dataAvgByInterval[order(dataAvgByInterval$steps,dataAvgByInterval$interval),]
+
+MaximumInterval <- tail(dataAvgByIntervalSorted,n=1)[[1]]
 
 
 ## Imputing missing values
 
+dataNA <- data[is.na(data$steps),]
 
+TotalNumberOfMissingValues <- nrow(dataNA)
+
+#Strategy will be based on using the average 
+dataNA$steps <- 1
+tail(dataNA)
+for (i in 1:nrow(dataNA)) {
+  dataNA[i,1] = dataAvgByInterval[dataAvgByInterval$interval == dataNA[i,3],2]
+}
+
+dataFilledIn <- rbind(dataNotNA, dataNA)
+
+dataSumByDateFI <- aggregate(x=dataFilledIn$steps, by=list(Date=dataFilledIn$date),FUN=sum)
+names(dataSumByDateFI) <- c('date','steps')
+
+hist(dataSumByDateFI$steps)
+mean(dataSumByDateFI$steps)
+median(dataSumByDateFI$steps)
 
 ## Are there differences in activity patterns between weekdays and weekends?
+dataFilledIn$DayOfWeek <- 'TBD'
+dataFilledIn$IsWeekend <- "weekday"
+for (i in 1:nrow(dataFilledIn)) {
+  dayofweek <- weekdays(strptime(dataFilledIn[i,2],"%Y-%m-%d"))
+  dataFilledIn[i,4] <- dayofweek
+  if(dayofweek %in% c('Saturday','Sunday')) {
+    dataFilledIn[i,5] <- 'weekend'  
+  }
+}
+
